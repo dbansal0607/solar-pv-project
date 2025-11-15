@@ -1,0 +1,85 @@
+{
+  "model_version": "20251112_071315",
+  "training_date": "2025-11-12T07:13:15.696795",
+  "data_split": {
+    "train_samples": 720,
+    "validation_samples": 240,
+    "test_samples": 240,
+    "train_percentage": 60.0,
+    "validation_percentage": 20.0,
+    "test_percentage": 20.0
+  },
+  "best_hyperparameters": {
+    "model__max_depth": 20,
+    "model__min_samples_leaf": 1,
+    "model__min_samples_split": 2,
+    "model__n_estimators": 100
+  },
+  "training_metrics": {
+    "mae": 0.0,
+    "rmse": 0.0,
+    "r2": 0.9994,
+    "mape": 1.22,
+    "explained_variance": 0.9994,
+    "max_error": 0.07
+  },
+  "validation_metrics": {
+    "mae": 0.0,
+    "rmse": 0.01,
+    "r2": 0.9978,
+    "mape": 7.7,
+    "explained_variance": 0.9978,
+    "max_error": 0.04
+  },
+  "test_metrics": {
+    "mae": 0.0,
+    "rmse": 0.01,
+    "r2": 0.9982,
+    "mape": 4.93,
+    "explained_variance": 0.9982,
+    "max_error": 0.05
+  },
+  "feature_importance": {
+    "Solar_Irradiance_kWh_m2": 0.0286,
+    "Temperature_C": 0.0106,
+    "Wind_Speed_mps": 0.0002,
+    "Relative_Humidity_%": 0.0005,
+    "Panel_Tilt_deg": 0.0003,
+    "Panel_Azimuth_deg": 0.0004,
+    "Plane_of_Array_Irradiance": 0.0277,
+    "Cell_Temperature_C": 0.9318
+  },
+  "correlation_with_target": {
+    "Solar_Irradiance_kWh_m2": -0.7174,
+    "Temperature_C": -0.2233,
+    "Wind_Speed_mps": -0.0108,
+    "Relative_Humidity_%": -0.0295,
+    "Panel_Tilt_deg": 0.0562,
+    "Panel_Azimuth_deg": 0.0246,
+    "Plane_of_Array_Irradiance": -0.7181,
+    "Cell_Temperature_C": -0.737
+  },
+  "outlier_counts": {
+    "Solar_Irradiance_kWh_m2": 6,
+    "Temperature_C": 9,
+    "Wind_Speed_mps": 4,
+    "Relative_Humidity_%": 9,
+    "Panel_Tilt_deg": 0,
+    "Panel_Azimuth_deg": 0,
+    "Plane_of_Array_Irradiance": 6,
+    "Cell_Temperature_C": 4,
+    "Power_Output_W": 106
+  },
+  "visualizations_generated": [
+    "01_target_distribution.png",
+    "02_feature_distributions.png",
+    "03_correlation_heatmap.png",
+    "04_pairplot_top_features.png",
+    "05_feature_vs_target.png",
+    "06_residual_analysis.png",
+    "07_predicted_vs_actual.png",
+    "08_error_distribution.png",
+    "09_feature_importance.png",
+    "10_learning_curve.png"
+  ]
+}
