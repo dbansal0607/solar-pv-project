@@ -107,4 +107,3 @@ solar-pv-project/
 \## Author
 
 Dhruv Bansal - College Final Year Project 2025
-

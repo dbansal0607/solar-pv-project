@@ -29,7 +29,7 @@ print("=" * 70)
 
 # Load the CSV file into a pandas DataFrame
 # This contains synthetic solar PV data with environmental parameters
-df = pd.read_csv('data/Solar_PV_Synthetic_Dataset.csv')
+df = pd.read_csv("data/Solar_PV_Synthetic_Dataset.csv")
 
 print(f"✓ Dataset loaded: {df.shape[0]} rows, {df.shape[1]} columns")
 print(f"✓ First 5 rows preview:")
@@ -49,18 +49,18 @@ print("=" * 70)
 # These are the input features (X) that the model will learn from
 # They represent environmental and panel configuration parameters
 FEATURES = [
-    'Solar_Irradiance_kWh_m2',      # Amount of sunlight hitting the panel
-    'Temperature_C',                 # Ambient air temperature
-    'Wind_Speed_mps',                # Wind speed (affects cooling)
-    'Relative_Humidity_%',           # Air moisture content
-    'Panel_Tilt_deg',                # Angle of panel tilt
-    'Panel_Azimuth_deg',             # Compass direction panel faces
-    'Plane_of_Array_Irradiance',     # Direct irradiance on panel surface
-    'Cell_Temperature_C'             # Temperature of solar cells themselves
+    "Solar_Irradiance_kWh_m2",  # Amount of sunlight hitting the panel
+    "Temperature_C",  # Ambient air temperature
+    "Wind_Speed_mps",  # Wind speed (affects cooling)
+    "Relative_Humidity_%",  # Air moisture content
+    "Panel_Tilt_deg",  # Angle of panel tilt
+    "Panel_Azimuth_deg",  # Compass direction panel faces
+    "Plane_of_Array_Irradiance",  # Direct irradiance on panel surface
+    "Cell_Temperature_C",  # Temperature of solar cells themselves
 ]
 
 # This is what we want to predict (y)
-TARGET = 'Power_Output_W'
+TARGET = "Power_Output_W"
 
 # Extract features (X) and target (y) from the DataFrame
 X = df[FEATURES].copy()
@@ -82,23 +82,26 @@ print("=" * 70)
 # First split: 80% for training+validation, 20% for final test
 # random_state=42 ensures reproducibility (same split every time)
 X_temp, X_test, y_temp, y_test = train_test_split(
-    X, y, 
-    test_size=0.20,      # 20% held out for final testing
+    X,
+    y,
+    test_size=0.20,  # 20% held out for final testing
     random_state=42,
-    shuffle=True         # Randomly shuffle before splitting
+    shuffle=True,  # Randomly shuffle before splitting
 )
 
 # Second split: Split the 80% into 60% train and 20% validation
 # 0.25 of 80% = 20% of total data
 X_train, X_val, y_train, y_val = train_test_split(
-    X_temp, y_temp,
-    test_size=0.25,      # 25% of 80% = 20% of total
-    random_state=42
+    X_temp, y_temp, test_size=0.25, random_state=42  # 25% of 80% = 20% of total
 )
 
-print(f"✓ Training set:   {X_train.shape[0]} samples ({X_train.shape[0]/len(X)*100:.1f}%)")
+print(
+    f"✓ Training set:   {X_train.shape[0]} samples ({X_train.shape[0]/len(X)*100:.1f}%)"
+)
 print(f"✓ Validation set: {X_val.shape[0]} samples ({X_val.shape[0]/len(X)*100:.1f}%)")
-print(f"✓ Test set:       {X_test.shape[0]} samples ({X_test.shape[0]/len(X)*100:.1f}%)")
+print(
+    f"✓ Test set:       {X_test.shape[0]} samples ({X_test.shape[0]/len(X)*100:.1f}%)"
+)
 
 # Why 60/20/20?
 # - 60% training: Used to fit the model (teach it patterns)
@@ -114,17 +117,18 @@ print("=" * 70)
 
 # A Pipeline chains together preprocessing and model training
 # This ensures the same transformations are applied during training and prediction
-pipeline = Pipeline([
-    # Step 1: StandardScaler - Normalize features to have mean=0, std=1
-    # Why? Different features have different scales (e.g., temperature vs irradiance)
-    # Scaling prevents features with larger values from dominating the model
-    ('scaler', StandardScaler()),
-    
-    # Step 2: RandomForestRegressor - The actual ML model
-    # Random Forest creates many decision trees and averages their predictions
-    # It handles non-linear relationships and feature interactions well
-    ('model', RandomForestRegressor(random_state=42))
-])
+pipeline = Pipeline(
+    [
+        # Step 1: StandardScaler - Normalize features to have mean=0, std=1
+        # Why? Different features have different scales (e.g., temperature vs irradiance)
+        # Scaling prevents features with larger values from dominating the model
+        ("scaler", StandardScaler()),
+        # Step 2: RandomForestRegressor - The actual ML model
+        # Random Forest creates many decision trees and averages their predictions
+        # It handles non-linear relationships and feature interactions well
+        ("model", RandomForestRegressor(random_state=42)),
+    ]
+)
 
 print("✓ Pipeline created with 2 steps:")
 print("  1. StandardScaler: Normalizes feature values")
@@ -142,20 +146,17 @@ print("=" * 70)
 param_grid = {
     # n_estimators: Number of trees in the forest
     # More trees = better performance but slower training
-    'model__n_estimators': [100, 200, 300],
-    
+    "model__n_estimators": [100, 200, 300],
     # max_depth: Maximum depth of each tree
     # Deeper trees can learn complex patterns but may overfit
     # None means nodes expand until all leaves are pure
-    'model__max_depth': [10, 20, None],
-    
+    "model__max_depth": [10, 20, None],
     # min_samples_split: Minimum samples required to split a node
     # Higher values prevent overfitting by avoiding tiny splits
-    'model__min_samples_split': [2, 5, 10],
-    
+    "model__min_samples_split": [2, 5, 10],
     # min_samples_leaf: Minimum samples required in a leaf node
     # Higher values create smoother decision boundaries
-    'model__min_samples_leaf': [1, 2, 4]
+    "model__min_samples_leaf": [1, 2, 4],
 }
 
 print(f"✓ Hyperparameter grid defined:")
@@ -172,10 +173,10 @@ print(f"✓ Total combinations to test: {3 * 3 * 3 * 3} = 81")
 grid_search = GridSearchCV(
     estimator=pipeline,
     param_grid=param_grid,
-    cv=3,                    # 3-fold cross-validation on training data
-    scoring='neg_mean_absolute_error',  # Minimize MAE (negative because sklearn maximizes)
-    n_jobs=-1,               # Use all CPU cores for parallel processing
-    verbose=2                # Print progress updates
+    cv=3,  # 3-fold cross-validation on training data
+    scoring="neg_mean_absolute_error",  # Minimize MAE (negative because sklearn maximizes)
+    n_jobs=-1,  # Use all CPU cores for parallel processing
+    verbose=2,  # Print progress updates
 )
 
 print("\n✓ Starting GridSearchCV (this may take 2-5 minutes)...")
@@ -260,7 +261,7 @@ print("STEP 8: Saving production model artifact...")
 print("=" * 70)
 
 # Create models directory if it doesn't exist
-os.makedirs('models', exist_ok=True)
+os.makedirs("models", exist_ok=True)
 
 # Generate version timestamp (YYYYMMDD_HHMMSS format)
 version_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -268,17 +269,17 @@ version_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 # Create model artifact dictionary
 # This bundles the pipeline with important metadata
 model_artifact = {
-    'pipeline': best_pipeline,           # The trained sklearn Pipeline
-    'features': FEATURES,                # List of feature names (critical for prediction!)
-    'version': version_timestamp,        # Version identifier
-    'train_date': datetime.now().isoformat(),  # ISO format timestamp
-    'training_samples': len(X_train),    # Number of samples used for training
-    'best_params': grid_search.best_params_,  # Best hyperparameters found
-    'sklearn_version': '1.3.0'           # scikit-learn version (for compatibility)
+    "pipeline": best_pipeline,  # The trained sklearn Pipeline
+    "features": FEATURES,  # List of feature names (critical for prediction!)
+    "version": version_timestamp,  # Version identifier
+    "train_date": datetime.now().isoformat(),  # ISO format timestamp
+    "training_samples": len(X_train),  # Number of samples used for training
+    "best_params": grid_search.best_params_,  # Best hyperparameters found
+    "sklearn_version": "1.3.0",  # scikit-learn version (for compatibility)
 }
 
 # Save the artifact using joblib (efficient for sklearn objects)
-model_path = 'models/pipeline_prod.joblib'
+model_path = "models/pipeline_prod.joblib"
 joblib.dump(model_artifact, model_path, compress=3)  # compress=3 for smaller file size
 
 print(f"✓ Model artifact saved to: {model_path}")
@@ -310,39 +311,38 @@ print("=" * 70)
 
 # Create metrics dictionary for easy viewing
 metrics = {
-    'model_version': version_timestamp,
-    'training_date': datetime.now().isoformat(),
-    'data_split': {
-        'train_samples': len(X_train),
-        'validation_samples': len(X_val),
-        'test_samples': len(X_test),
-        'train_percentage': 60.0,
-        'validation_percentage': 20.0,
-        'test_percentage': 20.0
+    "model_version": version_timestamp,
+    "training_date": datetime.now().isoformat(),
+    "data_split": {
+        "train_samples": len(X_train),
+        "validation_samples": len(X_val),
+        "test_samples": len(X_test),
+        "train_percentage": 60.0,
+        "validation_percentage": 20.0,
+        "test_percentage": 20.0,
     },
-    'best_hyperparameters': grid_search.best_params_,
-    'validation_metrics': {
-        'mae': round(val_mae, 2),
-        'rmse': round(val_rmse, 2),
-        'r2': round(val_r2, 4)
+    "best_hyperparameters": grid_search.best_params_,
+    "validation_metrics": {
+        "mae": round(val_mae, 2),
+        "rmse": round(val_rmse, 2),
+        "r2": round(val_r2, 4),
     },
-    'test_metrics': {
-        'mae': round(test_mae, 2),
-        'rmse': round(test_rmse, 2),
-        'r2': round(test_r2, 4)
+    "test_metrics": {
+        "mae": round(test_mae, 2),
+        "rmse": round(test_rmse, 2),
+        "r2": round(test_r2, 4),
     },
-    'feature_importance': {
+    "feature_importance": {
         feature: round(importance, 4)
         for feature, importance in zip(
-            FEATURES,
-            best_pipeline.named_steps['model'].feature_importances_
+            FEATURES, best_pipeline.named_steps["model"].feature_importances_
         )
-    }
+    },
 }
 
 # Save to JSON file
-metrics_path = 'models/metrics.json'
-with open(metrics_path, 'w') as f:
+metrics_path = "models/metrics.json"
+with open(metrics_path, "w") as f:
     json.dump(metrics, f, indent=2)
 
 print(f"✓ Metrics saved to: {metrics_path}")
