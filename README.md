@@ -1,109 +1,182 @@
-\# Solar PV Digital Twin Dashboard
+# 🌞 Solar PV Digital Twin — Advanced ML Dashboard & API
 
+A production-grade machine learning system for **Solar PV Power Output Prediction**, complete with:
 
+- 🤖 **ML Training Pipeline** (training_enhanced.py)
+- 🌐 **FastAPI Prediction Server** (server.py)
+- 🎨 **Modern Streamlit Dashboard** (app_enhanced.py)
+- 📊 **EDA + Model Visualizations**
+- 🧪 **Batch CSV Prediction**
+- 🔴 **Live Digital Twin Simulation**
+- 📁 **Industry-level Project Structure**
 
-Machine learning system for predicting solar panel power output from environmental parameters.
+---
 
+## 📸 Website UI — Screenshots
 
+### 🟦 Dashboard Overview
+<img src="models/visualizations/Dashboard.png" width="100%"/>
 
-\## Features
+### 🟩 Manual Predictor
+<img src="models/visualizations/Manual Predictor.png" width="100%"/>
 
-\- 🤖 RandomForest ML model with GridSearchCV tuning
+### 🟧 Live Digital Twin Simulation
+<img src="models/visualizations/Live Simulator.png" width="100%"/>
 
-\- 🌐 FastAPI REST API for predictions
+### 🟪 Batch CSV Predictions
+<img src="models/visualizations/CSV Prediction.png" width="100%"/>
 
-\- 🎨 Glass-themed Streamlit dashboard
+---
 
-\- 📊 Live digital twin simulation
+## 📊 EDA & Model Visualizations
 
-\- 📁 Batch CSV predictions
+### 🔹 Feature Distributions
+<img src="models/visualizations/02_feature_distributions.png" width="100%"/>
 
+### 🔹 Correlation Heatmap
+<img src="models/visualizations/03_correlation_heatmap.png" width="100%"/>
 
+### 🔹 Pairplot (Top Features)
+<img src="models/visualizations/04_pairplot_top_features.png" width="100%"/>
 
-\## Quick Start
+---
 
+## 🧠 Project Summary
 
+This Solar PV Digital Twin predicts **instantaneous power output (W)** using:
 
-\### 1. Setup Environment
+- Solar irradiance  
+- Temperature  
+- Wind speed  
+- Humidity  
+- Plane of array irradiance  
+- Cell temperature  
+- Panel tilt & azimuth  
 
+The system integrates **ML + API + UI** to simulate real-world solar plant monitoring, forecasting, and analysis.
+
+---
+
+## 🧮 Model Performance
+
+| Metric | Value |
+|--------|-------|
+| MAE | **0.0 W** |
+| MAPE | **4.93%** |
+| R² Score | **0.9982** |
+| Max Error | **0.05 W** |
+
+Artifacts stored in:
+```
+models/pipeline_prod.joblib
+models/metrics.json
+```
+
+---
+
+## 🏗️ System Architecture
+
+```
+data/  → preprocessing → training_enhanced.py
+          ↓
+models/pipeline_prod.joblib
+          ↓
+FastAPI server (server.py)
+          ↓
+Streamlit Dashboard (app_enhanced.py)
+```
+
+---
+
+## 🚀 Quick Start
+
+### 1️⃣ Create Environment  
 ```bash
-
 python -m venv venv
-
-.\\venv\\Scripts\\Activate.ps1
-
+.\venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-
 ```
 
-
-
-\### 2. Train Model
-
+### 2️⃣ Train Model  
 ```bash
-
-python src/train\_production.py
-
+python src/training/training_enhanced.py
 ```
 
-
-
-\### 3. Start API Server
-
+### 3️⃣ Start API Server  
 ```bash
-
 uvicorn src.server:app --reload
-
 ```
 
-
-
-\### 4. Launch Dashboard
-
+### 4️⃣ Launch Dashboard  
 ```bash
-
-streamlit run src/app.py
-
+streamlit run src/app_enhanced.py
 ```
 
+---
 
+## 🔌 API Endpoints
 
-\## Project Structure
+### POST /predict  
+JSON → single power output prediction
+
+### POST /predict_batch  
+Upload CSV → returns full predictions CSV/JSON
+
+### GET /health  
+Health check
+
+### GET /model  
+Model metadata + metrics
+
+---
+
+## 📂 Project Structure
 
 ```
-
 solar-pv-project/
-
-├── data/               # Dataset and predictions
-
-├── models/             # Trained model artifacts
-
-├── src/                # Source code
-
-│   ├── train\_production.py
-
-│   ├── server.py
-
-│   ├── app.py
-
-│   └── ...
-
-└── requirements.txt
-
+│
+├─ data/
+├─ models/
+│   ├─ pipeline_prod.joblib
+│   ├─ metrics.json
+│   └─ visualizations/
+│
+├─ src/
+│   ├─ app_enhanced.py
+│   ├─ server.py
+│   ├─ training/
+│   │   └─ training_enhanced.py
+│   ├─ inference/
+│   └─ utils/
+│
+├─ tests/
+├─ requirements.txt
+└─ README.md
 ```
 
+---
 
+## 🧩 Production Checklist
 
-\## Model Performance
+- ✔ Pre-commit formatting (Black + Flake8)  
+- ✔ Configurable training pipeline  
+- ✔ FastAPI endpoint validation  
+- ✔ Streamlit modular UI  
+- ✔ Ready for Docker deployment  
+- ✔ GitHub-friendly directory structure  
 
-\- Test MAE: ~45W
+---
 
-\- Test R²: ~0.95
+## 👨‍💻 Author
 
-\- Training samples: 60/20/20 split
+**Dhruv Bansal**  
+ML Engineer • Dashboard Developer • Final Year EEE  
 
+---
 
+## 📬 Contact  
+📧 Email: add-your-email  
+🌐 GitHub: https://github.com/dbansal0607
 
-\## Author
+---
 
-Dhruv Bansal - College Final Year Project 2025
