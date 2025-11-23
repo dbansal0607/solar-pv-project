@@ -175,7 +175,7 @@ ML Engineer • Dashboard Developer • Final Year EEE
 ---
 
 ## 📬 Contact  
-📧 Email: add-your-email  
+📧 Email: dhruvbansal23731@gmail.com
 🌐 GitHub: https://github.com/dbansal0607
 
 ---
